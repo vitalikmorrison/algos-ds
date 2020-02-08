@@ -74,8 +74,32 @@ data into one (target)
 """
 
 
+import signal
+from functools import wraps
+def try_with_timeout(timeout=2):
+    def decorator(func):
+
+        def _handle_timeout(signum, frame):
+            raise TimeoutError('Attempt Timed Out')
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            signal.signal(signal.SIGALRM, _handle_timeout)
+            signal.alarm(timeout)
+            try:
+                return func(*args, **kwargs)
+
+            finally:
+                signal.alarm(signal.SIG_DFL)
+
+        return wrapper
+
+    return decorator
+
+
+@try_with_timeout()
 def follow(thefile, target):
-    thefile.seek(0,2)      # Go to the end of the file
+    thefile.seek(0, 2)      # Go to the end of the file
     while True:
         line = thefile.readline()
         if not line:
@@ -91,11 +115,15 @@ def printer():
         line = (yield)
         print(line)
 
-# Example use
+
 f = open("access-log")
-follow(f, printer())
+try:
+    follow(f, printer())
+except TimeoutError:
+    print('func timed out ... moving on')
 
 
+@try_with_timeout()
 def follow(thefile, target):
     """ copipe.py """
     thefile.seek(0, 2)      # Go to the end of the file
@@ -123,6 +151,7 @@ def printer():
 
 # Example
 f = open("access-log")
-follow(f,
-       grep('python',
-            printer()))
+try:
+    follow( f, grep('python', printer()) )
+except TimeoutError:
+    print('func timed out ... moving on')

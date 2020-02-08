@@ -278,7 +278,7 @@ def try_function(total_timeout=3, per_attempt_timeout=1, no_attempts=2, accepted
                         continue
                     raise
                 else:
-                    signal.alarm(0)
+                    signal.alarm(signal.SIG_DFL)
 
                 return result
 

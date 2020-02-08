@@ -1,116 +1,8 @@
-"""
-/******************************************************************************
-
-                            Online Java Compiler.
-                Code, Compile, Run and Debug java program online.
-Write your code in this editor and press "Run" button to execute it.
-
-*******************************************************************************/
-public class Main
-{
-	public static void main(String[] args) {
-		System.out.println("Hello World");
-		Fraction f1 = new Fraction (1 ,2);
-        Fraction f2 = new Fraction (2 ,3);
-
-        System.out.println(f1.add(f2));
-        System.out.println(f1.add(1));
-	}
-}
-
-class Fraction extends Number implements Comparable<Fraction>
-{
-    private Integer numerator;
-    private Integer denominator;
-
-    public Fraction(Integer num, Integer den) {
-        this.numerator = num;
-        this.denominator = den;
-    }
-    public Fraction(Integer num) {
-        this.numerator = num;
-        this.denominator = 1;
-    }
-
-    public Integer getNumerator(){
-        return numerator;
-    }
-
-    public Integer getDenominator(){
-        return denominator;
-    }
-
-    public void setNumerator(Integer num) {
-        this.numerator = num;
-    }
-
-    public void setDenominator(Integer denominator) {
-        this.denominator = denominator;
-    }
-
-    public Fraction add(Fraction other){
-        Integer newNum, newDen, common;
-        newNum = other.getDenominator()*this.numerator + this.denominator*other.getNumerator();
-        newDen = other.getDenominator()*this.denominator;
-        common = gcd(newNum, newDen);
-        return new Fraction(newNum/common, newDen/common);
-
-    }
-
-    public Fraction add(Integer other) {
-        return add(new Fraction(other));
-    }
-
-    private static Integer gcd(Integer m, Integer n) {
-        while(m%n!=0) {
-            Integer oldm = m;
-            Integer oldn = n;
-
-            m = oldn;
-            n = oldm%oldn;
-        }
-        return n;
-    }
-    public String toString() {
-        return numerator.toString() + "/" + denominator.toString();
-    }
-
-    public boolean equals(Fraction other){
-        Integer num1 = this.numerator * other.getDenominator();
-        Integer num2 = this.denominator * other.getNumerator();
-        if (num2 == num1)
-            return true;
-        else
-            return false;
-    }
-    public double doubleValue() {
-        return numerator.doubleValue() / denominator.doubleValue();
-    }
-
-    public int intValue() {
-        return numerator.intValue() / denominator.intValue();
-    }
-    public long longValue() {
-        return numerator.longValue() / denominator.longValue();
-    }
-    public float floatValue() {
-        return numerator.floatValue() / denominator.floatValue();
-    }
-    public int compareTo(Fraction other) {
-        Integer num1 = this.numerator * other.getDenominator();
-        Integer num2 = this.denominator * other.getNumerator();
-        return num1 - num2;
-    }
-
-}
-
-"""
-
 import string
 from collections import defaultdict, deque
 
+""" Some Data Structures and Helper Functions"""
 
-""" REVISITED """
 
 class LinkedList:
     def __init__(self, head=None):
@@ -122,10 +14,12 @@ class LinkedList:
 
         return self.head
 
+
 class ListNode:
     def __init__(self, data):
         self.val = data
         self.next = None
+
 
 def print_ll(head):
     output = []
@@ -135,11 +29,13 @@ def print_ll(head):
 
     return ', '.join(output)
 
+
 class TreeNode:
     def __init__(self, val):
         self.val = val
         self.left = None
         self.right = None
+
 
 def print_bst_by_levels(root):
     if not root:
@@ -149,6 +45,7 @@ def print_bst_by_levels(root):
     q = [(root, 0)]
 
     while q:
+        # could use collections.deque and popleft() for more efficient implementation
         node, level = q.pop(0)
         if level >= len(output):
             output.append([node.val])
@@ -172,7 +69,7 @@ class Graph:
             self.graph[x].append(y)
 
 
-""" POWER FUNC O(log(n))"""
+""" POW Function O(log(n)) Binary Solution"""
 class Solution:
     def power_func(self, x, power):
         if power == 0:
@@ -186,10 +83,12 @@ class Solution:
 
         return temp * temp
 
+assert Solution().power_func(2, 11) == 2**11
 print(f'11: Power of 2 to 10 is {Solution().power_func(2, 10)}')
 
 
 """ Reverse Linked List"""
+
 
 def reverse_list(head):
     current = head
@@ -203,6 +102,7 @@ def reverse_list(head):
 
     return previous
 
+
 def reverse_list_rec(head):
     if head is None or head.next is None:
         return head
@@ -213,14 +113,18 @@ def reverse_list_rec(head):
 
     return new_head
 
-head = ListNode(1)
-head.next = ListNode(2)
-head.next.next = ListNode(3)
-head.next.next.next = ListNode(4)
-head.next.next.next.next = ListNode(5)
 
-print(f'21 Reverse Linked List: Original: {print_ll(head)}')
-rev_head = reverse_list(head)
+def compose_ll_from_list(l=[]):
+    ll = LinkedList()
+    for an_item in l[::-1]:
+        ll.insert_item(ListNode(an_item))
+
+    return ll.head
+
+llist = compose_ll_from_list([1, 2, 3, 4, 5])
+
+print(f'21 Reverse Linked List: Original: {print_ll(llist)}')
+rev_head = reverse_list(llist)
 print(f'21 Reverse Linked List: {print_ll(rev_head)}')
 norm_head = reverse_list_rec(rev_head)
 print(f'21 Reverse Back to Original: {print_ll(norm_head)}')
@@ -249,9 +153,12 @@ def is_palindrome(input_s):
     return True
 
 input_s = 'race a car'
-# input_s = "A man, a plan, a canal: Panama"
+input_s2 = "A man, a plan, a canal: Panama"
 print(f'31 Valid Palindrome - {input_s}:'
       f' {is_palindrome(input_s)}')
+
+print(f'31.2 Valid Palindrome - {input_s2}:'
+      f' {is_palindrome(input_s2)}')
 
 """ Root to Leaf in a Binary Tree recursive & Iterative """
 root = TreeNode(10)
@@ -278,6 +185,12 @@ def print_leaf_to_node_rec(root, tnode, res=[]):
     return res
 
 def print_leaf_to_node_it(root, tnode):
+    """
+        DFS search
+    :param root:
+    :param tnode:
+    :return:
+    """
     if root is None:
         return
 
@@ -797,20 +710,6 @@ def ladder_length(begin_word, end_word, word_list):
 
     return find_ladder_len(g, begin_word, end_word)
 
-    # visited = set()
-    #
-    # q = deque([(begin_word, 1)])
-    # while q:
-    #     curr_word, path_len = q.popleft()
-    #     if curr_word == end_word:
-    #         return path_len
-        #
-        # for word_node in g.graph[curr_word]:
-        #     if word_node not in visited:
-        #         visited.add(word_node)
-        #         q.append((word_node, path_len+1))
-    #
-    # return shortest_len
 
 word_list = ["hot", "dot", "dog", "lot", "log"]
 begin_word = 'hit'
@@ -824,6 +723,7 @@ print(f'76 Word Ladder from "{begin_word}" to "{end_word}" and word list {word_l
       f' {ladder_length(begin_word, end_word, word_list)}')
 print(f'76.2 Word Ladder from "{begin_word2}" to "{end_word2}" and word list {word_list2}: '
       f'{ladder_length(begin_word2, end_word2, word_list2)}')
+
 
 """ Get all combinations of a string """
 
@@ -849,5 +749,5 @@ def get_string_combos(input_str):
 input_string = 'abcd'
 input_string2 = 'abc'
 
-# print(f'102.Get string combos for {input_string}: {get_string_combos(input_string)}')
+print(f'102.Get string combos for {input_string}: {get_string_combos(input_string)}')
 print(f'102.2 Get string combos for {input_string2}: {get_string_combos(input_string2)}')

@@ -585,11 +585,9 @@ def is_hoppable(towers):
     result = helper(towers, 0)
     return result
 
+
 def is_hoppable_graph(towers):
     """
-
-    :param towers:
-    :return:
     Approach:
         - build a graph, make sure keep track of the outer edge
         - see if you can traverse it from 0 to the edge
@@ -737,7 +735,7 @@ def get_string_combos(input_str):
             output.add(''.join(a_str))
             # print('adding', a_str)
 
-        for i in range(l, len(input_str)):
+        for i in range(l, input_len):
             a_str[i], a_str[l] = a_str[l], a_str[i]
             helper(a_str, l+1)
             a_str[i], a_str[l] = a_str[l], a_str[i]

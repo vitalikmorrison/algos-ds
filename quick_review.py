@@ -172,6 +172,7 @@ tnode2 = TreeNode(15)
 root.left.right.right = tnode2
 tnode3 = TreeNode(43)
 
+
 def print_leaf_to_node_rec(root, tnode, res=[]):
     if root is None:
         return False
@@ -183,6 +184,7 @@ def print_leaf_to_node_rec(root, tnode, res=[]):
         res.insert(0, root.val)
 
     return res
+
 
 def print_leaf_to_node_it(root, tnode):
     """
@@ -371,7 +373,10 @@ def build_tree(preorder, inorder, pindex):
 
 preorder = [3, 9, 20, 15, 7]
 inorder = [9, 3, 15, 20, 7]
-print('49: Build tree from pre-order and post-order lists :', print_bst_by_levels(build_tree(preorder, inorder, pindex=[0])))
+print('49: Build tree from pre-order and post-order lists :', print_bst_by_levels(build_tree(preorder,
+                                                                                             inorder,
+                                                                                             pindex=[0])
+                                                                                  ))
 
 
 def remove_duplicates(head):
@@ -459,7 +464,6 @@ print(f'71.2 Find longest increasing subsequence in {nums}: {find_longest_increa
 
 
 def all_subsets(input_list):
-
     def helper(arr, i, set_so_far, res):
         if i < 0:
             res.add(tuple(set_so_far))
@@ -472,7 +476,6 @@ def all_subsets(input_list):
         set_so_far.remove(arr[i])
         # print('so far', set_so_far)
         helper(arr, i-1, set_so_far, res)
-
 
     result = set()
     helper(input_list, len(input_list)-1, set(input_list), result)
@@ -733,7 +736,6 @@ def get_string_combos(input_str):
     def helper(a_str, l):
         if l == input_len - 1:
             output.add(''.join(a_str))
-            # print('adding', a_str)
 
         for i in range(l, input_len):
             a_str[i], a_str[l] = a_str[l], a_str[i]
